@@ -16,9 +16,9 @@ Tfora=20;
 
 
 %variaveis computacionais
-dx=.01
-dy=.01
-lambda=1.85
+dx=.1
+dy=.1
+lambda=1.2
 eps=0.01
 
 
@@ -34,7 +34,7 @@ corr=zeros(yf+1,xf+1);
 %popula com 1 o que tem dentro
 for i = yi:yf
 	for j = xi:xf
-		corr(i,j) = 1;
+		corr(i,j) = 50*rand();
 	end
 end
 
@@ -46,7 +46,7 @@ gyf=gyi+h/dy-1; %
 %popula com 2 o que tem dentro do galpao
 for i = gyi:gyf
 	for j = gxi:gxf
-		corr(i,j) = 2;
+		corr(i,j) = 0;
 	end
 end
 
@@ -54,7 +54,7 @@ end
 for i = gyf:(gyf+(L/2)/dy-1)
 	for j = gxi:gxf
 		if (i*dy) <= (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h)
-			corr(i,j) = 3;
+			corr(i,j) = 0;
 		end
 	end
 end
@@ -91,7 +91,7 @@ while ~convergiu
 			corr(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 
 			if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
-				if (corr(i,j)-noAntigo)/corr(i,j) < eps
+				if abs((corr(i,j)-noAntigo))/corr(i,j) < eps
 					convergindo = false; %fazer mais interacoes
 				end
 			end
@@ -103,7 +103,7 @@ while ~convergiu
 			corr(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 			
 			if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
-				if (corr(i,j)-noAntigo)/corr(i,j) < eps
+				if abs((corr(i,j)-noAntigo))/corr(i,j) < eps
 					convergindo = false; %fazer mais interacoes
 				end
 			end
@@ -120,7 +120,7 @@ while ~convergiu
 				corr(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 
 				if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
-					if (corr(i,j)-noAntigo)/corr(i,j) < eps
+					if abs((corr(i,j)-noAntigo))/corr(i,j) < eps
 						convergindo = false; %fazer mais interacoes
 					end
 				end
