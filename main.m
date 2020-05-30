@@ -35,6 +35,7 @@ corr2=zeros(yf,xf);
 %popula com 1 o que tem dentro
 for i = yi:yf
 	for j = xi:xf
+		if
 		corr1(i,j) = 1;
 	end
 end
@@ -61,7 +62,72 @@ for i = gyf:(gyf+(L/2)/dy-1)
 end
 
 
+contador=0;
+convergiu=false;
+
+while !convergiu
+	contador++;
+	convergindo=true;
+
+	%aplicando condicoes nas bordas utilizando equacionamento de taylor
+	%para considerar condicoes de Neumann
+
+	%primeiro no topo
+	for j = xi-1:xf+1
+		corr1(yf+1,j)=dx*V + corr1(y,j)
+	end
+
+	%segundo nos lados
+	for i = yi:yf
+		corr1(i,1)=corr1(i,2) %esquerdo
+		corr1(i,xf+1)=corr1(i,xf) %direito
+	end
 
 
+	%Aplicando o metrodo nos nos internos
+	%primeiro na altura inferior ao topo do telhado
+	for i = gyi:gyf
+		for j = xi:gxi-1 %antes do galpao
+			noAntigo =corr1(i,j);
+			noAtual = (corr1(i+1,j)+corr1(i-1,j)+corr1(i,j+1)+corr1(i,j-1))/4;
+			corr1(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
+
+			if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
+				if (corr1(i,j)-noAntigo)/corr1(i,j) < eps
+					convergindo = false %fazer mais interacoes
+				end
+			end
+
+		for j = gxf+1:xf %depois do galpao
+			noAntigo =corr1(i,j);
+			noAtual = (corr1(i+1,j)+corr1(i-1,j)+corr1(i,j+1)+corr1(i,j-1))/4;
+			corr1(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
+			
+			if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
+				if (corr1(i,j)-noAntigo)/corr1(i,j) < eps
+					convergindo = false %fazer mais interacoes
+				end
+			end
+		end
+	end
 
 
+	%segundo na altura superior ao topo do telhado
+	for i = gyf+1:yf
+		for j = xi:xf
+			if  (i*dy) > (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h) %checa se esta nos limites externos do telhado
+				noAntigo =corr1(i,j);
+				noAtual = (corr1(i+1,j)+corr1(i-1,j)+corr1(i,j+1)+corr1(i,j-1))/4;
+				corr1(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
+
+				if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
+					if (corr1(i,j)-noAntigo)/corr1(i,j) < eps
+						convergindo = false %fazer mais interacoes
+					end
+				end
+
+
+	if convergindo %checa se pode parar de iterar
+		convergiu=true;
+	end
+end
