@@ -16,10 +16,10 @@ Tfora=20;
 
 
 %variaveis computacionais
-dx=.1
-dy=.1
-lambda=1.2
-eps=0.01
+dx=0.1
+dy=0.1
+lambda=1.85
+eps=1
 
 
 
@@ -70,15 +70,20 @@ while ~convergiu
 	%aplicando condicoes nas bordas utilizando equacionamento de taylor
 	%para considerar condicoes de Neumann
 
-	%primeiro no topo
-	for j = xi-1:xf+1
-		corr(yf+1,j)=dx*V + corr(yf+1,j);
+
+	%primeiro nas pontas superiores
+	corr(yf+1,1)=(corr(yf+1,2)+corr(yf,1)+V*dy)/2
+	corr(yf+1,xf+1)=(corr(yf+1,xf-1)+corr(yf,xf+1)+V*dy)/2
+
+	%segundo no topo
+	for j = xi:xf
+		corr(yf+1,j)=(dx*V + corr(yf,j) + (corr(yf+1,j-1)+corr(yf+1,j+1))/2)/2;
 	end
 
 	%segundo nos lados
 	for i = yi:yf
-		corr(i,1)=corr(i,2); %esquerdo
-		corr(i,xf+1)=corr(i,xf); %direito
+		corr(i,1)=(corr(i,2) + (corr(i-1,1)+corr(i+1,1))/2)/2; %esquerdo
+		corr(i,xf+1)=(corr(i,xf) + (corr(i-1,xf+1)+corr(i+1,xf+1))/2)/2; %direito
 	end
 
 
@@ -91,7 +96,7 @@ while ~convergiu
 			corr(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 
 			if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
-				if abs((corr(i,j)-noAntigo))/corr(i,j) < eps
+				if abs((corr(i,j)-noAntigo))/corr(i,j) > eps
 					convergindo = false; %fazer mais interacoes
 				end
 			end
@@ -103,7 +108,7 @@ while ~convergiu
 			corr(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 			
 			if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
-				if abs((corr(i,j)-noAntigo))/corr(i,j) < eps
+				if abs((corr(i,j)-noAntigo))/corr(i,j) > eps
 					convergindo = false; %fazer mais interacoes
 				end
 			end
@@ -120,7 +125,7 @@ while ~convergiu
 				corr(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 
 				if convergindo %para melhorar desempenho e nao fazer contas desnecessarias
-					if abs((corr(i,j)-noAntigo))/corr(i,j) < eps
+					if abs((corr(i,j)-noAntigo))/corr(i,j) > eps
 						convergindo = false; %fazer mais interacoes
 					end
 				end
