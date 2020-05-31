@@ -10,6 +10,7 @@ ro=1.25;
 gama=1.4;
 k=0.026;
 cp=1002;
+patm=10000;
 
 Tdentro=40;
 Tfora=20;
@@ -19,7 +20,7 @@ Tfora=20;
 dx=0.1
 dy=0.1
 lambda=1.85
-eps=1
+eps=0.01
 
 
 
@@ -30,6 +31,7 @@ yf=H/dy-1;
 
 
 corr=zeros(yf+1,xf+1);
+p=zeros(yf+1,xf+1);
 
 %popula com 1 o que tem dentro
 for i = yi:yf
@@ -72,8 +74,8 @@ while ~convergiu
 
 
 	%primeiro nas pontas superiores
-	corr(yf+1,1)=(corr(yf+1,2)+corr(yf,1)+V*dy)/2
-	corr(yf+1,xf+1)=(corr(yf+1,xf-1)+corr(yf,xf+1)+V*dy)/2
+	corr(yf+1,1)=(corr(yf+1,2)+corr(yf,1)+V*dy)/2;
+	corr(yf+1,xf+1)=(corr(yf+1,xf-1)+corr(yf,xf+1)+V*dy)/2;
 
 	%segundo no topo
 	for j = xi:xf
@@ -136,3 +138,72 @@ while ~convergiu
 		convergiu=true;
 	end
 end
+
+
+
+
+
+
+
+
+
+
+%calculando pressao utilizando primeira diferenca central
+for i = yi:yf
+	for j = xi:xf %antes do galpao
+		u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
+		v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
+		pressao(i,j) = -ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+	end
+end
+
+%calculando nas bordas com diferenças progressivas e regressivas
+for j = xi:xf
+	%em cima
+	u=(corr(yf+1,j)-corr(yf,j))/(dy);
+	v=(corr(yf+1,j+1)-corr(yf+1,j-1))/(2*dx);
+	pressao(yf+1,j)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+
+	%embaixo
+	u=(corr(2,j)-corr(1,j))/(dy);
+	v=(corr(1,j+1)-corr(1,j-1))/(2*dx);
+	pressao(1,j)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+end
+
+for i = yi:yf
+	%lado esquerdo
+	u=(corr(i+1,1)-corr(i-1,1))/(2*dy);
+	v=(corr(i,2)-corr(i,1))/(dx);
+	pressao(i,1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+
+	%lado direito
+	u=(corr(i+1,xf+1)-corr(i-1,xf+1))/(2*dy);
+	v=(corr(i,xf+1)-corr(i,xf))/(dx);
+	pressao(i,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+end
+
+%calculando nas pontas
+%embaixo esquerda
+u=(corr(2,1)-corr(1,1))/(dy);
+v=(corr(1,2)-corr(1,1))/(dx);
+pressao(1,1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+
+%embaixo direita
+u=(corr(2,xf+1)-corr(1,xf+1))/(dy);
+v=(corr(1,xf+1)-corr(1,xf))/(dx);
+pressao(1,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+
+%em cima esquerda
+u=(corr(yf+1,1)-corr(yf,1))/(dy);
+v=(corr(yf+1,2)-corr(yf+1,1))/(dx);
+pressao(yf+1,1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+
+%em cima direita
+u=(corr(yf+1,xf+1)-corr(yf,xf+1))/(dy);
+v=(corr(yf+1,xf+1)-corr(yf+1,xf))/(dx);
+pressao(yf+1,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
+
+
+
+
+
