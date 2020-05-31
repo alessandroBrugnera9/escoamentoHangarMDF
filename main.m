@@ -32,6 +32,8 @@ yf=H/dy-1;
 
 corr=zeros(yf+1,xf+1);
 p=zeros(yf+1,xf+1);
+deltap=zeros(yf+1,xf+1);
+
 
 %popula com 1 o que tem dentro
 for i = yi:yf
@@ -66,7 +68,7 @@ contador=0;
 convergiu=false;
 
 while ~convergiu
-	contador = contador+1
+	contador = contador+1;
 	convergindo=true;
 
 	%aplicando condicoes nas bordas utilizando equacionamento de taylor
@@ -139,7 +141,7 @@ while ~convergiu
 	end
 end
 
-
+contador
 
 
 
@@ -207,3 +209,32 @@ pressao(yf+1,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
 
 
 
+
+
+
+
+%variacao de pressao
+for i = 1:yf+1
+	for j = 1:xf+1
+		deltap(i,j) = p(i,j) - patm;
+	end
+end
+
+
+
+maiory=0;
+maiorx=0;
+telhado=zeros(yf+1,xf+1);
+for i = 2:yf+1
+	for j = 1:xf+1
+		if corr(i,j)==0
+			telhado(i,j)=pressao(i,j);
+			maiory=i
+			maiorx=j
+			break
+		end
+	end
+end
+
+telhado2=zeros(maiory+10,(gxf-gxi)+10);
+for
