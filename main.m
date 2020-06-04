@@ -261,8 +261,10 @@ forca=0;
 for j = 1:xf+1
 	for i = fliplr(1:yf+1)
 		if telhadoP(i,j)~=0
-			seno=(i-gyi)/sqrt(((i-gyi))^2+(j-xf/2)^2);
-			forca = forca + (telhadoP(i,j)*seno)*(dx*comprimento*seno); %pressao*area
+			forca = forca + (telhadoP(i,j))*(dx*comprimento); %pressao*area
+
+			%seno=(i-gyi)/sqrt(((i-gyi))^2+(j-xf/2)^2);
+			%forca = forca + (telhadoP(i,j)*seno)*(dx*comprimento*seno); %pressao*area
 			break % pula para proximo x
 		end
 	end
@@ -383,7 +385,15 @@ while ~convergiu
 	end
 
 	%segundo emabvixo
-	for j = xi:xf
+		%antes do galpao
+	for j = xi:gxi-1
+		u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
+		noAtual=(k/dx^2*(2*T(2,j) +  T(1,j+1)+T(1,j-1)) + ro*cp*u/dx*(T(1,j-1)))/(4*k/dx^2 + ro*cp*u/dx);
+		noAntigo =T(i,j);	
+		T(1,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
+	end
+		%depois do galpao
+	for j = gxf+1:xf
 		u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 		noAtual=(k/dx^2*(2*T(2,j) +  T(1,j+1)+T(1,j-1)) + ro*cp*u/dx*(T(1,j-1)))/(4*k/dx^2 + ro*cp*u/dx);
 		noAntigo =T(i,j);	
@@ -478,3 +488,49 @@ while ~convergiu
 end
 
 contador
+
+
+
+
+
+
+
+
+%calculando Q
+Q=0;
+
+%percorrendo da cima para baixo
+for j = 1:xf+1
+	for i = fliplr(1:yf+1)
+		if T(i,j)==Tdentro
+			%prmeira diferente progressiva
+			Q = Q -k*(T(i+1,j)-T(i,j))/dy *(dx*comprimento); %pressao*area
+			break % pula para proximo x
+		end
+	end
+end
+
+
+%percorrendo da esquerda para direita
+for i = 1:yf+1
+	for j = 1:xf+1
+		if T(i,j)==Tdentro
+			%prmeira diferente progressiva
+			Q = Q -k*(T(i,j-1)-T(i,j))/dx *(dy*comprimento); %pressao*area
+			break % pula para proximo y
+		end
+	end
+end
+
+
+%percorrendo da direita para esquerda
+for i = 1:yf+1
+	for j = fliplr(1:xf+1)
+		if T(i,j)==Tdentro
+			%prmeira diferente progressiva
+			Q = Q -k*(T(i,j+1)-T(i,j))/dx *(dy*comprimento); %pressao*area
+			break % pula para proximo y
+		end
+	end
+end
+
