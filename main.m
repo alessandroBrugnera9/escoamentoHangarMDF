@@ -257,11 +257,13 @@ end
 %como o telhado eh simetrico só há uma parcela em y de forca
 forca=0;
 
-for i = 1:yf+1
-	for j = 1:xf+1
-		if telhadoP(i,j)
+%percorre em x de cima para baixo ate encontrar o telhado
+for j = 1:xf+1
+	for i = fliplr(1:yf+1)
+		if telhadoP(i,j)~=0
 			seno=(i-gyi)/sqrt(((i-gyi))^2+(j-xf/2)^2);
-			forca = forca + (telhadoP(i,j)*seno)*(dx*comprimento*seno); %pressao*area
+			forca = forca + (telhadoP(i,j)*seno)*(dx*comprimento*seno) %pressao*area
+			break % pula para proximo x
 		end
 	end
 end
