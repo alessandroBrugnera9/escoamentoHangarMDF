@@ -359,51 +359,6 @@ for i = yi:yf
 	end
 end
 
-%calculando nas bordas com diferenças progressivas e regressivas
-for j = xi:xf
-	%em cima
-	u=(corr(yf+1,j)-corr(yf,j))/(dy);
-	v=(corr(yf+1,j+1)-corr(yf+1,j-1))/(2*dx);
-	T(yf+1,j)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
-
-	%embaixo
-	u=(corr(2,j)-corr(1,j))/(dy);
-	v=(corr(1,j+1)-corr(1,j-1))/(2*dx);
-	T(1,j)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
-end
-
-for i = yi:yf
-	%lado esquerdo
-	u=(corr(i+1,1)-corr(i-1,1))/(2*dy);
-	v=(corr(i,2)-corr(i,1))/(dx);
-	T(i,1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
-
-	%lado direito
-	u=(corr(i+1,xf+1)-corr(i-1,xf+1))/(2*dy);
-	v=(corr(i,xf+1)-corr(i,xf))/(dx);
-	T(i,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
-end
-
-%calculando nas pontas
-%embaixo esquerda
-u=(corr(2,1)-corr(1,1))/(dy);
-v=(corr(1,2)-corr(1,1))/(dx);
-T(1,1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
-
-%embaixo direita
-u=(corr(2,xf+1)-corr(1,xf+1))/(dy);
-v=(corr(1,xf+1)-corr(1,xf))/(dx);
-T(1,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
-
-%em cima esquerda
-u=(corr(yf+1,1)-corr(yf,1))/(dy);
-v=(corr(yf+1,2)-corr(yf+1,1))/(dx);
-T(yf+1,1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
-
-%em cima direita
-u=(corr(yf+1,xf+1)-corr(yf,xf+1))/(dy);
-v=(corr(yf+1,xf+1)-corr(yf+1,xf))/(dx);
-T(yf+1,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
 
 
 
