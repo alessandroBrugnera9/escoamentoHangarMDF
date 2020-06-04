@@ -318,7 +318,7 @@ yf=H/dy-1;
 T=zeros(yf+1,xf+1);
 
 %condicao de dischlet a esquerda
-for i 1:yf+1:
+for i=1:yf+1
 	T(i,1) = Tfora;
 end
 
@@ -339,22 +339,6 @@ for i = gyf:(gyf+(L/2)/dy-1)
 	for j = gxi:gxf
 		if (i*dy) <= (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h)
 			T(i,j) = Tdentro;
-		end
-	end
-end
-
-
-
-
-%calculando pressao utilizando primeira diferenca central
-for i = yi:yf
-	for j = xi:xf %antes do galpao
-		u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
-		v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
-		if u>0
-		T(i,j) = 
-		else
-			body
 		end
 	end
 end
@@ -414,9 +398,9 @@ while ~convergiu
 		for j = xi:gxi-1 %antes do galpao
 			u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 			v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
-			if u<0 & v<0:
+			if u<0 & v<0
 				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
-			elseif u>0 & v>0:
+			elseif u>0 & v>0
 				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
 			else
 				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
@@ -435,9 +419,9 @@ while ~convergiu
 		for j = gxf+1:xf %depois do galpao
 			u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 			v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
-			if u<0 & v<0:
+			if u<0 & v<0
 				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
-			elseif u>0 & v>0:
+			elseif u>0 & v>0
 				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
 			else
 				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
@@ -461,9 +445,9 @@ while ~convergiu
 			if  (i*dy) > (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h) %checa se esta nos limites externos do telhado
 				u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 				v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
-				if u<0 & v<0:
+				if u<0 & v<0
 					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
-				elseif u>0 & v>0:
+				elseif u>0 & v>0
 					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
 				else
 					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
