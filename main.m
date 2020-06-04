@@ -371,13 +371,13 @@ while ~convergiu
 	noAntigo =T(i,j);
 	T(yf+1,xf+1) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	%baixo
-	noAtual=(T(1,xf+1)+T(2,xf))/2
+	noAtual=(T(1,xf+1)+T(2,xf))/2;
 	noAntigo =T(i,j);
 	T(1,xf+1) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	%segundo no topo
-	u=V;
+	u=-V;
 	for j = xi:xf
-		noAtual=(k/dx*(2*T(yf,j) +  T(yf+1,j+1)+T(yf+1,j-1)) + ro*cp*u/dx*(T(yf+1,j-1)))/(4*k/dx + ro*cp*u/dx);
+		noAtual=(k/dx^2*(2*T(yf,j) +  T(yf+1,j+1)+T(yf+1,j-1)) + ro*cp*u/dx*(T(yf+1,j-1)))/(4*k/dx^2 + ro*cp*u/dx);
 		noAntigo =T(i,j);
 		T(yf+1,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	end
@@ -385,7 +385,7 @@ while ~convergiu
 	%segundo emabvixo
 	for j = xi:xf
 		u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
-		noAtual=(k/dx*(2*T(2,j) +  T(1,j+1)+T(1,j-1)) + ro*cp*u/dx*(T(1,j-1)))/(4*k/dx + ro*cp*u/dx);
+		noAtual=(k/dx^2*(2*T(2,j) +  T(1,j+1)+T(1,j-1)) + ro*cp*u/dx*(T(1,j-1)))/(4*k/dx^2 + ro*cp*u/dx);
 		noAntigo =T(i,j);	
 		T(1,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	end
@@ -394,7 +394,7 @@ while ~convergiu
 	for i = yi:yf
 		u=(corr(i+1,xf+1)-corr(i-1,xf+1))/(2*dy);
 		v=0;
-		noAtual=(k/dx*(2*T(i,xf) +  T(i+1,xf+1)+T(i-1,xf+1)) + ro*cp*u/dx*(T(i-1,xf+1)))/(4*k/dx + ro*cp*u/dx);
+		noAtual=(k/dx^2*(2*T(i,xf) +  T(i+1,xf+1)+T(i-1,xf+1)) + ro*cp*u/dx*(T(i-1,xf+1)))/(4*k/dx^2 + ro*cp*u/dx);
 		noAntigo =T(i,j);
 		T(i,xf+1) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	end
@@ -407,11 +407,11 @@ while ~convergiu
 			u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 			v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
 			if u<0 & v<0
-				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
+				noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx^2 + 2*ro*cp*u/dx);
 			elseif u>0 & v>0
-				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
+				noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx^2 - 2*ro*cp*u/dx);
 			else
-				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
+				noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx^2);
 			end
 
 			noAntigo =T(i,j);
@@ -428,11 +428,11 @@ while ~convergiu
 			u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 			v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
 			if u<0 & v<0
-				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
+				noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx^2 + 2*ro*cp*u/dx);
 			elseif u>0 & v>0
-				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
+				noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx^2 - 2*ro*cp*u/dx);
 			else
-				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
+				noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx^2);
 			end
 
 			noAntigo =T(i,j);
@@ -454,11 +454,11 @@ while ~convergiu
 				u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 				v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
 				if u<0 & v<0
-					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
+					noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx^2 + 2*ro*cp*u/dx);
 				elseif u>0 & v>0
-					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
+					noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx^2 - 2*ro*cp*u/dx);
 				else
-					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
+					noAtual = (k/dx^2*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx^2);
 				end
 
 				noAntigo =T(i,j);
