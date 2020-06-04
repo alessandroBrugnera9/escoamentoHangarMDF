@@ -322,6 +322,29 @@ for i 1:yf+1:
 	T(i,1) = Tfora;
 end
 
+gxi=d/dx+1; %x esquerda
+gxf=gxi+(L)/dx; %x direita
+gyi=yi; %
+gyf=gyi+h/dy-1; %
+
+%popula com Tdentro o que tem dentro do galpao
+for i = gyi:gyf
+	for j = gxi:gxf
+		T(i,j) = Tdentro;
+	end
+end
+
+%popula com 3 o que tem no topo do galpao
+for i = gyf:(gyf+(L/2)/dy-1)
+	for j = gxi:gxf
+		if (i*dy) <= (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h)
+			T(i,j) = Tdentro;
+		end
+	end
+end
+
+
+
 
 %calculando pressao utilizando primeira diferenca central
 for i = yi:yf
