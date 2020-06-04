@@ -227,21 +227,27 @@ maiory=0;
 maiorx=0;
 menorPressaoTelhado=Inf;
 telhadoP=zeros(yf+1,xf+1);
-for i = 2:yf+1
+for i = gyf:yf+1
 	for j = 1:xf+1
-		if corr(i,j)==0
-			telhadoP(i,j)=pressao(i,j);
-			if menorPressaoTelhado < pressao
-				menorPressaoTelhado = pressao(i,j);
+		if deltap(i,j)==0 %checa se é um ponto interno do telhado
+			%testa se alguma do vizinhanca é o telhado vendo se é diferente de 0 e atribui a matriz do telhado
+			%algum valores serao subscritos neles mesmos
+			if deltap(i-1,j)==0
+				telhadoP(i-1,j) = deltap(i-1,j);
 			end
-			maiory=i
-			maiorx=j
-			break
+			if deltap(i,j-1)
+				telhadoP(i,j-1) = deltap(i,j-1);
+			end
+			if deltap(i+1,j)
+				telhadoP(i+1,j) = deltap(i+1,j);
+			end
+			if deltap(i,j+1)
+				telhadoP(i,j+1) = deltap(i,j+1);
+			end
 		end
 	end
 end
 
-telhadoP= telhadoP +fliplr(telhadoP);
 
 
 
