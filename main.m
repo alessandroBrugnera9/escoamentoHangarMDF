@@ -418,11 +418,11 @@ while ~convergiu
 			u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 			v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
 			if u<0 & v<0:
-				noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4/dx + 2*ro*cp*u/dx);
+				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
 			elseif u>0 & v>0:
-				noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4/dx - 2*ro*cp*u/dx);
+				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
 			else
-				noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4/dx);
+				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
 			end
 
 			noAntigo =T(i,j);
@@ -439,11 +439,11 @@ while ~convergiu
 			u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 			v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
 			if u<0 & v<0:
-				noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4/dx + 2*ro*cp*u/dx);
+				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
 			elseif u>0 & v>0:
-				noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4/dx - 2*ro*cp*u/dx);
+				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
 			else
-				noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4/dx);
+				noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
 			end
 
 			noAntigo =T(i,j);
@@ -465,11 +465,11 @@ while ~convergiu
 				u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 				v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
 				if u<0 & v<0:
-					noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4/dx + 2*ro*cp*u/dx);
+					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) - ro*cp*u/dx*(2*T(i,j+1)))/(4*k/dx + 2*ro*cp*u/dx);
 				elseif u>0 & v>0:
-					noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4/dx - 2*ro*cp*u/dx);
+					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(2*T(i,j-1)))/(4*k/dx - 2*ro*cp*u/dx);
 				else
-					noAtual = ((T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4/dx);
+					noAtual = (k/dx*(T(i+1,j)+T(i-1,j)+T(i,j+1)+T(i,j-1)) + ro*cp*u/dx*(T(i,j+1) - T(i,j-1)))/(4*k/dx);
 				end
 
 				noAntigo =T(i,j);
