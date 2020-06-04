@@ -32,7 +32,7 @@ yf=H/dy-1;
 
 
 corr=zeros(yf+1,xf+1);
-p=zeros(yf+1,xf+1);
+pressao=zeros(yf+1,xf+1);
 deltap=zeros(yf+1,xf+1);
 
 
@@ -58,7 +58,7 @@ end
 %popula com 3 o que tem no topo do galpao
 for i = gyf:(gyf+(L/2)/dy-1)
 	for j = gxi:gxf
-		if (i*dy) <= (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h)
+		if ((i)*dy) <= (sqrt((L/2)^2 - ((j-1)*dx-d-L/2)^2)+h)
 			corr(i,j) = 0;
 		end
 	end
@@ -124,7 +124,7 @@ while ~convergiu
 	%segundo na altura superior ao topo do telhado
 	for i = gyf+1:yf
 		for j = xi:xf
-			if  (i*dy) > (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h) %checa se esta nos limites externos do telhado
+			if  (i*dy) > (sqrt((L/2)^2 - ((j-1)*dx-d-L/2)^2)+h) %checa se esta nos limites externos do telhado
 				noAntigo =corr(i,j);
 				noAtual = (corr(i+1,j)+corr(i-1,j)+corr(i,j+1)+corr(i,j-1))/4;
 				corr(i,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
@@ -217,7 +217,7 @@ pressao(yf+1,xf+1)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
 %variacao de pressao
 for i = 1:yf+1
 	for j = 1:xf+1
-		deltap(i,j) = p(i,j) - patm;
+		deltap(i,j) = pressao(i,j) - patm;
 	end
 end
 
@@ -337,7 +337,7 @@ end
 %popula com 3 o que tem no topo do galpao
 for i = gyf:(gyf+(L/2)/dy-1)
 	for j = gxi:gxf
-		if (i*dy) <= (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h)
+		if (i*dy) <= (sqrt((L/2)^2 - ((j-1)*dx-d-L/2)^2)+h)
 			T(i,j) = Tdentro;
 		end
 	end
@@ -442,7 +442,7 @@ while ~convergiu
 	%segundo na altura superior ao topo do telhado
 	for i = gyf+1:yf
 		for j = xi:xf
-			if  (i*dy) > (sqrt((L/2)^2 - (j*dx-d-L/2)^2)+h) %checa se esta nos limites externos do telhado
+			if  (i*dy) > (sqrt((L/2)^2 - ((j-1)*dx-d-L/2)^2)+h) %checa se esta nos limites externos do telhado
 				u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
 				v=(corr(i,j+1)-corr(i,j-1))/(2*dx);
 				if u<0 & v<0
