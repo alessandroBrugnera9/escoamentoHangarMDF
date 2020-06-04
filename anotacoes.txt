@@ -16,4 +16,6 @@ telhado
 	discretizado em pontos
 		assim tem dx e dy
 			Q e forca vai ser proporcional a dx e dy de cada face
-	
+
+T
+	as vezes u semper maior q 0

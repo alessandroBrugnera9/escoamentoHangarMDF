@@ -164,6 +164,9 @@ end
 for j = xi:xf
 	%em cima
 	u=(corr(yf+1,j)-corr(yf,j))/(dy);
+	if u<0
+		1
+	end
 	v=(corr(yf+1,j+1)-corr(yf+1,j-1))/(2*dx);
 	pressao(yf+1,j)=-ro*(gama-1)/gama*(u^2+v^2)/2 + patm;
 
@@ -377,7 +380,7 @@ while ~convergiu
 	noAntigo =T(i,j);
 	T(1,xf+1) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	%segundo no topo
-	u=-V;
+	u=V;
 	for j = xi:xf
 		noAtual=(k/dx^2*(2*T(yf,j) +  T(yf+1,j+1)+T(yf+1,j-1)) + ro*cp*u/dx*(T(yf+1,j-1)))/(4*k/dx^2 + ro*cp*u/dx);
 		noAntigo =T(i,j);
