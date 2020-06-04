@@ -373,19 +373,38 @@ while ~convergiu
 	%para considerar condicoes de Neumann
 
 
-	%primeiro nas pontas superiores
-	corr(yf+1,1)=(corr(yf+1,2)+corr(yf,1)+V*dy)/2;
-	corr(yf+1,xf+1)=(corr(yf+1,xf-1)+corr(yf,xf+1)+V*dy)/2;
-
+	%primeiro nas pontas
+	%cima
+	noAtual=(T(yf+1,xf)+T(yf,xf+1))/2;
+	noAntigo =T(i,j);
+	T(yf+1,xf+1) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
+	%baixo
+	noAtual=(T(1,xf+1)+T(2,xf))/2
+	noAntigo =T(i,j);
+	T(1,xf+1) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	%segundo no topo
+	u=V;
 	for j = xi:xf
-		corr(yf+1,j)=(dx*V + corr(yf,j) + (corr(yf+1,j-1)+corr(yf+1,j+1))/2)/2;
+		noAtual=(k/dx*(2*T(yf,j) +  T(yf+1,j+1)+T(yf+1,j-1)) + ro*cp*u/dx*(T(yf+1,j-1)))/(4*k/dx + ro*cp*u/dx);
+		noAntigo =T(i,j);
+		T(yf+1,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	end
 
-	%segundo nos lados
+	%segundo emabvixo
+	for j = xi:xf
+		u=(corr(i+1,j)-corr(i-1,j))/(2*dy);
+		noAtual=(k/dx*(2*T(2,j) +  T(1,j+1)+T(1,j-1)) + ro*cp*u/dx*(T(1,j-1)))/(4*k/dx + ro*cp*u/dx);
+		noAntigo =T(i,j);	
+		T(1,j) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
+	end
+
+	%terceito a direita
 	for i = yi:yf
-		corr(i,1)=(corr(i,2) + (corr(i-1,1)+corr(i+1,1))/2)/2; %esquerdo
-		corr(i,xf+1)=(corr(i,xf) + (corr(i-1,xf+1)+corr(i+1,xf+1))/2)/2; %direito
+		u=(corr(i+1,xf+1)-corr(i-1,xf+1))/(2*dy);
+		v=0;
+		noAtual=(k/dx*(2*T(i,xf) +  T(i+1,xf+1)+T(i-1,xf+1)) + ro*cp*u/dx*(T(i-1,xf+1)))/(4*k/dx + ro*cp*u/dx);
+		noAntigo =T(i,j);
+		T(i,xf+1) = lambda*noAtual + (1-lambda)*noAntigo; %sobrerrelaxacao
 	end
 
 
