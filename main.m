@@ -18,10 +18,10 @@ Tfora=20;
 
 
 %variaveis computacionais
-dx=0.1
-dy=0.1
+dx=h/8
+dy=dx
 lambda=1.85
-eps=0.01
+eps=0.001
 
 
 
@@ -39,7 +39,7 @@ deltap=zeros(yf+1,xf+1);
 %popula com 1 o que tem dentro
 for i = yi:yf
 	for j = xi:xf
-		corr(i,j) = 50*rand();
+		corr(i,j) = 0;
 	end
 end
 
@@ -536,4 +536,6 @@ for i = 1:yf+1
 		end
 	end
 end
+
+
 
