@@ -18,7 +18,7 @@ Tfora=20;
 
 
 %variaveis computacionais
-dx=0.01
+dx=0.05
 dy=dx
 lambda=1.85
 eps=0.001
